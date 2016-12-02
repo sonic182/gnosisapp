@@ -11,14 +11,21 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Drawer from 'react-native-drawer'
 
 import Home from './home';
+import Sidebar from './layout/sidebar';
 
+let drawer;
 export default class Main extends Component {
-
-  constructor (props) {
-    super(props)
+  constructor (props, context) {
+    super(props, context)
+    this.state = {
+      drawer: null,
+    }
     this.renderScene.bind(this)
+    this.openControlPanel.bind(this)
+    this.closeControlPanel.bind(this)
   }
 
   navigationBar () {
@@ -27,7 +34,7 @@ export default class Main extends Component {
        routeMapper={{
          LeftButton: (route, navigator, index, navState) => {
           //  return (<Text style={styles.navigatorText}>Cancel</Text>)
-           return (<Icon style={styles.menuIcon} name="bars" size={30} color="#fff" />)
+           return (<Icon onPress={this.openControlPanel} style={styles.menuIcon} name="bars" size={30} color="#fff" />)
          },
          RightButton: (route, navigator, index, navState) =>{
           //  return (<Text style={styles.navigatorText}>Done</Text>)
@@ -41,14 +48,36 @@ export default class Main extends Component {
       />)
   }
 
+  closeControlPanel () {
+    Alert.alert('close')
+    // this.state.drawer.close()
+  }
+
+  openControlPanel () {
+    // Alert.alert('open')
+    // console.log('this._drawer')
+    // console.log(this._drawer)
+    drawer.open()
+    // this.state.drawer.open()
+  }
+
   render() {
     return (
-      <Navigator
-        initialRoute={this.initialRoute()}
-        renderScene={this.renderScene}
-        navigationBar={this.navigationBar()}
-        style={styles.navigator}
-      />
+      <Drawer
+        type='static'
+        openDrawerOffset={100}
+        ref={(ref) => drawer = ref}
+        styles={drawerStyles}
+        tweenHandler={Drawer.tweenPresets.parallax}
+        content={<Sidebar />}
+        >
+        <Navigator
+          initialRoute={this.initialRoute()}
+          renderScene={this.renderScene}
+          navigationBar={this.navigationBar()}
+          style={styles.navigator}
+          />
+      </Drawer>
     );
   }
 
@@ -77,6 +106,11 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   }
+})
+
+const drawerStyles = StyleSheet.create({
+  drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
+  main: {paddingLeft: 3},
 })
 
 // const styles = StyleSheet.create({

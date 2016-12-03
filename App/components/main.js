@@ -20,9 +20,6 @@ let drawer;
 export default class Main extends Component {
   constructor (props, context) {
     super(props, context)
-    this.state = {
-      drawer: null,
-    }
     this.renderScene.bind(this)
     this.openControlPanel.bind(this)
     this.closeControlPanel.bind(this)
@@ -37,8 +34,8 @@ export default class Main extends Component {
            return (<Icon onPress={this.openControlPanel} style={styles.menuIcon} name="bars" size={30} color="#fff" />)
          },
          RightButton: (route, navigator, index, navState) =>{
-          //  return (<Text style={styles.navigatorText}>Done</Text>)
-           return (<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
+
+           return true ? '' :(<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
          },
          Title: (route, navigator, index, navState) => {
            return (<Text style={styles.navigatorText}>Awesome Nav Bar</Text>)
@@ -49,16 +46,11 @@ export default class Main extends Component {
   }
 
   closeControlPanel () {
-    Alert.alert('close')
-    // this.state.drawer.close()
+    drawer.close()
   }
 
   openControlPanel () {
-    // Alert.alert('open')
-    // console.log('this._drawer')
-    // console.log(this._drawer)
     drawer.open()
-    // this.state.drawer.open()
   }
 
   render() {
@@ -67,7 +59,16 @@ export default class Main extends Component {
         type='static'
         openDrawerOffset={100}
         ref={(ref) => drawer = ref}
-        styles={drawerStyles}
+        styles={{
+          drawer: {
+            shadowColor: '#6e1d1d',
+            shadowOpacity: 0.8,
+            shadowRadius: 3
+          },
+          main: {
+            paddingLeft: 0
+          }
+        }}
         tweenHandler={Drawer.tweenPresets.parallax}
         content={<Sidebar />}
         >
@@ -95,8 +96,6 @@ const styles = StyleSheet.create({
   navigatorBar: {
     backgroundColor: 'rgb(31, 102, 198)',
   },
-  navigator: {
-  },
   menuIcon: {
     padding: 10
   },
@@ -107,27 +106,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 })
-
-const drawerStyles = StyleSheet.create({
-  drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
-  main: {paddingLeft: 3},
-})
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#F5FCFF',
-//   },
-//   welcome: {
-//     fontSize: 20,
-//     textAlign: 'center',
-//     margin: 10,
-//   },
-//   instructions: {
-//     textAlign: 'center',
-//     color: '#333333',
-//     marginBottom: 5,
-//   },
-// });

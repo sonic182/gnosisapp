@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -7,11 +6,12 @@ import {
   View,
   Navigator,
   NavigationBar,
-  Alert
+  Alert,
+  DrawerLayoutAndroid
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Drawer from 'react-native-drawer'
+
 
 import Home from './home';
 import Sidebar from './layout/sidebar';
@@ -21,8 +21,6 @@ export default class Main extends Component {
   constructor (props, context) {
     super(props, context)
     this.renderScene.bind(this)
-    this.openControlPanel.bind(this)
-    this.closeControlPanel.bind(this)
   }
 
   navigationBar () {
@@ -30,55 +28,39 @@ export default class Main extends Component {
       <Navigator.NavigationBar
        routeMapper={{
          LeftButton: (route, navigator, index, navState) => {
-          //  return (<Text style={styles.navigatorText}>Cancel</Text>)
-           return (<Icon onPress={this.openControlPanel} style={styles.menuIcon} name="bars" size={30} color="#fff" />)
+           return (<Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" />)
          },
          RightButton: (route, navigator, index, navState) =>{
-
            return true ? '' :(<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
          },
          Title: (route, navigator, index, navState) => {
-           return (<Text style={styles.navigatorText}>Awesome Nav Bar</Text>)
+           return (<Text style={styles.navigatorText}>Gnosis España</Text>)
          },
        }}
        style={styles.navigatorBar}
       />)
   }
 
-  closeControlPanel () {
-    drawer.close()
-  }
-
-  openControlPanel () {
-    drawer.open()
+  openDrawer() {
+    drawer.openDrawer()
   }
 
   render() {
     return (
-      <Drawer
-        type='static'
-        openDrawerOffset={100}
-        ref={(ref) => drawer = ref}
-        styles={{
-          drawer: {
-            shadowColor: '#6e1d1d',
-            shadowOpacity: 0.8,
-            shadowRadius: 3
-          },
-          main: {
-            paddingLeft: 0
-          }
-        }}
-        tweenHandler={Drawer.tweenPresets.parallax}
-        content={<Sidebar />}
-        >
-        <Navigator
-          initialRoute={this.initialRoute()}
-          renderScene={this.renderScene}
-          navigationBar={this.navigationBar()}
-          style={styles.navigator}
+      <DrawerLayoutAndroid
+        drawerWidth={300}
+        ref={(_drawer) => { drawer = _drawer  }}
+        drawerPosition={DrawerLayoutAndroid.positions.Left}
+        renderNavigationView={() => <Sidebar />}>
+          <Navigator
+            initialRoute={this.initialRoute()}
+            renderScene={(router, navigator) => {
+              return this.renderScene(router, navigator, this)
+            }}
+            navigationBar={this.navigationBar()}
+            style={styles.navigator}
           />
-      </Drawer>
+      </DrawerLayoutAndroid>
     );
   }
 
@@ -86,9 +68,8 @@ export default class Main extends Component {
     return { title: 'My Initial Scene', index: 0 }
   }
 
-  renderScene (route, navigator) {
-    // return <Home title={route.title} />
-    return <Home />
+  renderScene (route, navigator, dis) {
+    return <Home title={route.title} />
   }
 }
 
@@ -96,12 +77,9 @@ const styles = StyleSheet.create({
   navigatorBar: {
     backgroundColor: 'rgb(31, 102, 198)',
   },
-  menuIcon: {
-    padding: 10
-  },
   navigatorText: {
-    paddingVertical: 14,
-    fontSize: 22,
+    paddingVertical: 15,
+    fontSize: 18,
     color: 'white',
     textAlign: 'center',
   }

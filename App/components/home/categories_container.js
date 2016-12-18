@@ -42,13 +42,25 @@ class Category extends Component {
 
 export default class CategoriesList extends Component {
 
+	categoriesFilter (c) {
+		return c.post_count !== 0
+	}
+
+	categoriesMap (c) {
+		return c.name
+	}
+
 	constructor (props) {
 		super(props)
+		this.state = {
+			categories: ['Loading...']
+		}
 		http.get('categories')
 		.then((r) => r.json())
 		.then((rJson) => {
 			console.log('rJson')
 			console.log(rJson)
+			this.setState({categories: rJson.categories.filter(this.categoriesFilter).map(this.categoriesMap)})
 		})
 	}
 
@@ -59,15 +71,9 @@ export default class CategoriesList extends Component {
 				showsHorizontalScrollIndicator={false}
 				style={styles.categories}
 				>
-				<Category name="C1"/>
-				<Category name="C2"/>
-				<Category name="C3"/>
-				<Category name="C3"/>
-				<Category name="C3"/>
-				<Category name="C3"/>
-				<Category name="C3"/>
-				<Category name="C3"/>
-				<Category name="C3"/>
+				{this.state.categories.map((c) =>
+					<Category name={c} />
+				)}
 			</ScrollView>
 		)
 	}

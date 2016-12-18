@@ -13,7 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-import Home from './home';
+import Home from './home/home';
 import Sidebar from './layout/sidebar';
 
 let drawer;
@@ -69,18 +69,28 @@ export default class Main extends Component {
   }
 
   renderScene (route, navigator, dis) {
-    return <Home title={route.title} />
+    // <Text style={{backgroundColor: 'red', display: 'none'}}>Checking</Text>
+    return (
+      <View style={styles.scene}>
+        <Home title={route.title} />
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   navigatorBar: {
     backgroundColor: 'rgb(31, 102, 198)',
+    height: 55
   },
   navigatorText: {
     paddingVertical: 15,
     fontSize: 18,
     color: 'white',
     textAlign: 'center',
+  },
+  scene: {
+    flex: 1,
+    marginTop: 55,
   }
 })

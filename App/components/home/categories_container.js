@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import {
 	View,
-	Text,
 	ScrollView,
 	StyleSheet,
+
+	Platform,
+	TouchableNativeFeedback,
+	TouchableOpacity,
+	Text,
 } from 'react-native';
 
 let site = 'blog.mogollon.com.ve'
@@ -20,12 +24,18 @@ var http = {
 class Category extends Component {
 
 	render () {
+		const buttonStyle = [styles.button]
+		const textStyle = [styles.text]
+		const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
+
 		return (
-			<View style={styles.category}>
-				<Text>
-					{this.props.name}
-				</Text>
-			</View>
+			<Touchable
+				accessibilityComponentType="button"
+				style={styles.category}>
+				<View style={buttonStyle}>
+          <Text style={textStyle}>{this.props.name}</Text>
+        </View>
+			</Touchable>
 		)
 	}
 }
@@ -44,7 +54,11 @@ export default class CategoriesList extends Component {
 
 	render () {
 		return (
-			<ScrollView horizontal={true} style={styles.categories}>
+			<ScrollView
+				horizontal={true}
+				showsHorizontalScrollIndicator={false}
+				style={styles.categories}
+				>
 				<Category name="C1"/>
 				<Category name="C2"/>
 				<Category name="C3"/>
@@ -67,6 +81,29 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 30,
 	},
 	categories: {
-		height: 40
-	}
+		height: 35
+	},
+	button: Platform.select({
+    ios: {},
+    android: {
+      elevation: 4,
+      backgroundColor: '#ffffff',
+      // borderRadius: 2,
+			paddingHorizontal: 7
+    },
+  }),
+  text: Platform.select({
+    ios: {
+      color: '#444',
+      textAlign: 'center',
+      padding: 8,
+      fontSize: 18,
+    },
+    android: {
+      textAlign: 'center',
+      color: '#444',
+      padding: 8,
+      fontWeight: '500',
+    },
+  }),
 })

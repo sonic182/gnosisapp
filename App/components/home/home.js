@@ -8,7 +8,11 @@ import {
 } from 'react-native'
 
 import ToolbarAndroid from 'ToolbarAndroid'
-import CategoriesList from './categories_container';
+import CategoriesList from './categories';
+import PostItem from './posts';
+
+import Http from '../../services/http';
+
 
 export default class Home extends Component{
 
@@ -16,10 +20,22 @@ export default class Home extends Component{
     super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin'
-      ])
+      posts: ds.cloneWithRows([{
+        title: 'Loading...',
+      }])
     };
+    Http.get('posts')
+    .then((r) => r.json())
+    .then((rJson) => {
+      console.log('rJson')
+      console.log(rJson)
+      // rJson.posts.forEach((p) => {
+      //   console.log('p.featured_image')
+      //   console.log(p.featured_image)
+      // })
+      this.setState({posts: ds.cloneWithRows(rJson.posts)})
+    })
+
   }
 
   render () {
@@ -33,61 +49,21 @@ export default class Home extends Component{
           <ListView
             style={styles.homeList}
             contentContainerStyle={styles.homeListContainer}
-            dataSource={this.state.dataSource}
-            renderRow={(rowData) => {
+            dataSource={this.state.posts}
+            renderRow={(post) => {
               return (
-                <Image
-                  source={require('../../assets/images/sol_acuario.png')}
-                  style={styles.logo}
-                  ></Image>
+                <PostItem post={post}/>
               )
             }}
             />
         </View>
       </View>
     )
+    // <Image
+    // source={require('../../assets/images/sol_acuario.png')}
+    // style={styles.logo}
+    // ></Image>
   }
-
-  // <View style={styles.container}>
-  //   <Text style={styles.title}>
-  //     Gnosis España
-  //   </Text>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Image
-  //     source={require('../../assets/images/sol_acuario.png')}
-  //     style={styles.logo}
-  //     ></Image>
-  //   <Text>
-  //     This is Home component
-  //   </Text>
-  // </View>
 }
 
 const styles = StyleSheet.create({
@@ -112,14 +88,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   homeList: {
+    backgroundColor: 'red',
     alignSelf: 'stretch',
   },
   homeListContainer: {
-    // alignSelf: 'stretch',
+    backgroundColor: 'blue',
+    alignSelf: 'stretch',
     alignItems: 'center',
   },
-  logo: {
-    width: 200,
-    height: 200,
-  }
 })

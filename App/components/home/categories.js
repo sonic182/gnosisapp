@@ -10,16 +10,7 @@ import {
 	Text,
 } from 'react-native';
 
-let site = 'blog.mogollon.com.ve'
-// let site = 'gnosisespaña.es'
-let url = `https://public-api.wordpress.com/rest/v1.1/sites/${site}/`
-
-var http = {
-	url: url,
-	get: function(path, options){
-		return fetch(`${url}${path}`, options)
-	}
-}
+import Http from '../../services/http';
 
 class Category extends Component {
 
@@ -51,7 +42,7 @@ export default class CategoriesList extends Component {
 		this.state = {
 			categories: [{name: 'Loading...', ID: 0}]
 		}
-		http.get('categories')
+		Http.get('categories')
 		.then((r) => r.json())
 		.then((rJson) => {
 			// console.log('rJson')

@@ -9,6 +9,10 @@ import {
 	WebView,
 } from 'react-native';
 
+import {XmlEntities} from 'html-entities';
+let entities = new XmlEntities();
+
+
 import Http from '../../services/http';
 
 
@@ -24,7 +28,7 @@ class PostItem extends Component {
 						style={styles.logo}
 						/>}
 				<Text style={styles.postTitle}>
-					{post.title}
+					{entities.decode(post.title)}
 				</Text>
 			</View>
 		)

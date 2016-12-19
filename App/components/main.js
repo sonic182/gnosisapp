@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Home from './home/home';
 import Sidebar from './layout/sidebar';
+import PostView from './post/post_show';
 
 let drawer;
 export default class Main extends Component {
@@ -28,13 +29,14 @@ export default class Main extends Component {
       <Navigator.NavigationBar
        routeMapper={{
          LeftButton: (route, navigator, index, navState) => {
-           return (<Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" />)
+           return route.back ? <Icon onPress={navigator.pop} style={styles.menuIcon} name="chevron-left" size={22} style={{padding: 15}} color="#fff" /> : <View/>
+          //  return (<Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" />)
          },
          RightButton: (route, navigator, index, navState) =>{
            return true ? '' :(<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
          },
          Title: (route, navigator, index, navState) => {
-           return (<Text style={styles.navigatorText}>Gnosis España</Text>)
+           return (<Text style={styles.navigatorText}>{route.my_title || 'Gnosis España'}</Text>)
          },
        }}
        style={styles.navigatorBar}
@@ -46,6 +48,16 @@ export default class Main extends Component {
   }
 
   render() {
+    return (
+      <Navigator
+        initialRoute={this.initialRoute()}
+        renderScene={(router, navigator) => {
+          return this.renderScene(router, navigator, this)
+        }}
+        navigationBar={this.navigationBar()}
+        style={styles.navigator}
+      />
+    )
     return (
       <DrawerLayoutAndroid
         drawerWidth={300}
@@ -65,16 +77,26 @@ export default class Main extends Component {
   }
 
   initialRoute () {
-    return { title: 'My Initial Scene', index: 0 }
+    return { title: 'Home', index: 0 }
   }
 
   renderScene (route, navigator, dis) {
     // <Text style={{backgroundColor: 'red', display: 'none'}}>Checking</Text>
+    switch(route.title) {
+      case 'Home':
+        return (
+          <Home navigator={navigator} style={styles.scene} title={route.title} />
+        )
+      break;
+      case 'PostView':
+        return (
+          <PostView navigator={navigator} post={route.post}/>
+        )
+      break;
+    };
     return (
-      <View style={styles.scene}>
-        <Home title={route.title} />
-      </View>
-    )
+      <Text>Error render scene</Text>
+    );
   }
 }
 
@@ -82,6 +104,10 @@ const styles = StyleSheet.create({
   navigatorBar: {
     backgroundColor: 'rgb(31, 102, 198)',
     height: 55
+  },
+  navigator: {
+    backgroundColor: '#eee',
+    paddingTop: 55
   },
   navigatorText: {
     paddingVertical: 15,
@@ -91,6 +117,6 @@ const styles = StyleSheet.create({
   },
   scene: {
     flex: 1,
-    marginTop: 55,
+    // marginTop: 55,
   }
 })

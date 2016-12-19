@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 
 import Http from '../../services/http';
+const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
 
 class Category extends Component {
 
 	render () {
 		const buttonStyle = [styles.button]
 		const textStyle = [styles.text]
-		const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
 
 		return (
 			<Touchable

@@ -21,7 +21,7 @@ export default class Home extends Component{
       <View style={styles.content}>
         <CategoriesList style={styles.categories} />
         <View style={styles.container}>
-          <PostContainer/>
+          <PostContainer navigator={this.props.navigator}/>
         </View>
       </View>
     )

@@ -7,10 +7,15 @@ import {
 	StyleSheet,
 	ListView,
 	WebView,
+
+	Platform,
+	TouchableNativeFeedback,
+	TouchableOpacity,
 } from 'react-native';
 
 import {XmlEntities} from 'html-entities';
-let entities = new XmlEntities();
+const entities = new XmlEntities();
+const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
 
 
 import Http from '../../services/http';
@@ -21,16 +26,20 @@ class PostItem extends Component {
 	render () {
 		let post = this.props.post;
 		return (
-			<View style={styles.Post}>
-				{!post.featured_image ? false:
-					<Image
-						source={{uri: post.featured_image}}
-						style={styles.logo}
-						/>}
-				<Text style={styles.postTitle}>
-					{entities.decode(post.title)}
-				</Text>
-			</View>
+			<Touchable
+				onPress={this.props.onPress}
+				accessibilityComponentType="button">
+				<View style={styles.Post}>
+					{!post.featured_image ? false:
+						<Image
+							source={{uri: post.featured_image}}
+							style={styles.logo}
+							/>}
+					<Text style={styles.postTitle}>
+						{entities.decode(post.title)}
+					</Text>
+				</View>
+			</Touchable>
 		)
 	}
 }
@@ -39,6 +48,8 @@ export default class PostContainer extends Component {
 
 	constructor (props) {
 			super(props)
+			// console.log('props')
+			// console.log(props)
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			this.state = {
 				posts: ds.cloneWithRows([{
@@ -48,8 +59,8 @@ export default class PostContainer extends Component {
 			Http.get(Http.urlParams('posts', {pretty: true}))
 			.then((r) => r.json())
 			.then((rJson) => {
-				console.log('rJson')
-				console.log(rJson)
+				// console.log('rJson')
+				// console.log(rJson)
 				// rJson.posts.forEach((p) => {
 				//   console.log('p.title')
 				//   console.log(p.title)
@@ -66,7 +77,9 @@ export default class PostContainer extends Component {
 				dataSource={this.state.posts}
 				renderRow={(post) => {
 					return (
-						<PostItem post={post}/>
+						<PostItem post={post} onPress={ () => {
+							this.props.navigator.push({title: 'PostView', post: post, back: true, my_title: post.title})
+						}}/>
 					)
 				}}
 				/>

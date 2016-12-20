@@ -8,14 +8,10 @@ import {
 	ListView,
 	WebView,
 
-	Platform,
-	TouchableNativeFeedback,
-	TouchableOpacity,
 } from 'react-native';
 
-import {XmlEntities} from 'html-entities';
-const entities = new XmlEntities();
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
+import utils from '../../utils/utils';
+const Touchable = utils.Touchable;
 
 
 import Http from '../../services/http';
@@ -36,7 +32,7 @@ class PostItem extends Component {
 							style={styles.logo}
 							/>}
 					<Text style={styles.postTitle}>
-						{entities.decode(post.title)}
+						{utils.entities.decode(post.title)}
 					</Text>
 				</View>
 			</Touchable>
@@ -91,15 +87,26 @@ export default class PostContainer extends Component {
 const styles = StyleSheet.create({
 	Post: {
 		alignSelf: 'stretch',
-		borderColor: 'black',
+		borderColor: '#eee',
 		backgroundColor: '#fff',
+		// backgroundColor: 'red',
+		// borderBottomWidth: 5,
+		// borderRightWidth: 5,
+		// borderWidth: 2,
+		borderTopWidth: 5,
 		borderBottomWidth: 5,
 		padding: 5,
-		marginVertical: 5
+		marginVertical: 10,
+		// marginHorizontal: 5
 	},
 	postTitle: {
 		fontSize: 22,
-		textAlign: 'center'
+		margin: -5,
+		padding: 5,
+		alignSelf: 'stretch',
+		textAlign: 'center',
+		// backgroundColor: 'red',
+		backgroundColor: '#eee',
 	},
 	logo: {
     alignSelf: 'stretch',

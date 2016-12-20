@@ -7,11 +7,13 @@ import {
   Navigator,
   NavigationBar,
   Alert,
-  DrawerLayoutAndroid
+  DrawerLayoutAndroid,
+  Platform,
+  BackAndroid,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import utils from '../utils/utils'
 
 import Home from './home/home';
 import Sidebar from './layout/sidebar';
@@ -29,14 +31,22 @@ export default class Main extends Component {
       <Navigator.NavigationBar
        routeMapper={{
          LeftButton: (route, navigator, index, navState) => {
-           return route.back ? <Icon onPress={navigator.pop} style={styles.menuIcon} name="chevron-left" size={22} style={{padding: 15}} color="#fff" /> : <View/>
+           return (
+             route.back ?
+              <Icon onPress={navigator.pop}
+                style={styles.menuIcon}
+                name="arrow-left" size={22} style={{padding: 15}} color="#fff" /> : <View/>)
           //  return (<Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" />)
          },
          RightButton: (route, navigator, index, navState) =>{
            return true ? '' :(<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
          },
          Title: (route, navigator, index, navState) => {
-           return (<Text style={styles.navigatorText}>{route.my_title || 'Gnosis España'}</Text>)
+           return (
+             <Text style={styles.navigatorText}>{route.my_title ?
+               utils.truncatechars(utils.entities.decode(route.my_title), 30) :
+               'Gnosis España'}
+             </Text>)
          },
        }}
        style={styles.navigatorBar}
@@ -58,6 +68,7 @@ export default class Main extends Component {
         style={styles.navigator}
       />
     )
+
     return (
       <DrawerLayoutAndroid
         drawerWidth={300}
@@ -81,7 +92,18 @@ export default class Main extends Component {
   }
 
   renderScene (route, navigator, dis) {
-    // <Text style={{backgroundColor: 'red', display: 'none'}}>Checking</Text>
+    var navigator;
+
+    if (Platform.OS === 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', () => {
+          if (navigator && navigator.getCurrentRoutes().length > 1) {
+              navigator.pop();
+              return true;
+          }
+          return false;
+      });
+    }
+
     switch(route.title) {
       case 'Home':
         return (
@@ -90,7 +112,7 @@ export default class Main extends Component {
       break;
       case 'PostView':
         return (
-          <PostView navigator={navigator} post={route.post}/>
+          <PostView style={styles.scene} navigator={navigator} post={route.post}/>
         )
       break;
     };
@@ -102,16 +124,17 @@ export default class Main extends Component {
 
 const styles = StyleSheet.create({
   navigatorBar: {
-    backgroundColor: 'rgb(31, 102, 198)',
+    backgroundColor: '#2b6bc3',
     height: 55
   },
   navigator: {
-    backgroundColor: '#eee',
+    // app background!
+    backgroundColor: '#ddd',
     paddingTop: 55
   },
   navigatorText: {
-    paddingVertical: 15,
-    fontSize: 18,
+    paddingVertical: 17,
+    fontSize: 16,
     color: 'white',
     textAlign: 'center',
   },

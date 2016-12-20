@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import {
 	View,
+	Text,
 	ScrollView,
 	StyleSheet,
 
 	Platform,
-	TouchableNativeFeedback,
-	TouchableOpacity,
-	Text,
 } from 'react-native';
 
+import utils from '../../utils/utils';
+
 import Http from '../../services/http';
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
+const Touchable = utils.Touchable;
 
 class Category extends Component {
 

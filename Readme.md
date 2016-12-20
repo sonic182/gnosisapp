@@ -3,7 +3,8 @@
 Simple wordpress react-native client for [Gnosis España](http://gnosisespaña.es) website.
 
 ## Beta
-At this time the app points to [my blog](http://blog.mogollon.com.ve) in wordpress.
+<!-- At this time the app points to [my blog](http://blog.mogollon.com.ve) in wordpress. -->
+At this time the app points to [my Studio182 Blog](https://studio182.es/blog/) in wordpress.
 
 ## Development
 

@@ -46,11 +46,11 @@ export default class PostContainer extends Component {
 			super(props)
 			// console.log('props')
 			// console.log(props)
-			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+			this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.ID !== r2.ID});
 			this.state = {
-				posts: ds.cloneWithRows([{
+				posts: this.ds.cloneWithRows([{
 					title: 'Loading...',
-				}])
+				}]),
 			};
 			Http.get(Http.urlParams('posts', {pretty: true}))
 			.then((r) => r.json())
@@ -61,9 +61,38 @@ export default class PostContainer extends Component {
 				//   console.log('p.title')
 				//   console.log(p.title)
 				// })
-				this.setState({posts: ds.cloneWithRows(rJson.posts)})
+				this.posts = rJson.posts;
+				this.setState({posts: this.ds.cloneWithRows(this.posts)})
 			})
+			this.setCategory.bind(this)
 		}
+
+	setCategory (cat) {
+		if (cat.ID === 0){
+			this.setState({posts: this.ds.cloneWithRows(this.posts)})
+		} else {
+			// console.log('cat')
+			// console.log(cat)
+			// console.log('this.posts')
+			// console.log('this.posts[0].categories')
+			// console.log(this.posts[0].categories)
+			this.setState({posts: this.ds.cloneWithRows(this.posts.filter(this.hasCategory(cat)))})
+		}
+	}
+
+	hasCategory(cat){
+		return (post) => {
+			// console.log('Object.keys(post.categories)')
+			// console.log(Object.keys(post.categories))
+			// console.log('cat')
+			// console.log(cat)
+			let res = Object.keys(post.categories).filter((c) => c === cat.name)
+			// console.log('res')
+			// console.log(res)
+			// console.log(res.length)
+			return res.length
+		}
+	}
 
 	render () {
 		return (

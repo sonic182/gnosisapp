@@ -13,15 +13,30 @@ import PostContainer from './posts';
 
 // import Http from '../../services/http';
 
-
+let category = null;
+let PostsContainerComponent = null;
 export default class Home extends Component{
+
+  constructor (props) {
+    super(props)
+    this.setCategory.bind(this)
+  }
+
+  setCategory () {
+
+  }
 
   render () {
     return (
       <View style={styles.content}>
-        <CategoriesList style={styles.categories} />
+        <CategoriesList
+          selectedCategory={(cat) => {
+            category = cat
+            PostsContainerComponent.setCategory(cat)
+          }}
+          style={styles.categories} />
         <View style={styles.container}>
-          <PostContainer navigator={this.props.navigator}/>
+          <PostContainer ref={(postContainer) => { PostsContainerComponent = postContainer}} navigator={this.props.navigator}/>
         </View>
       </View>
     )

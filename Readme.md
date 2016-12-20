@@ -24,5 +24,6 @@ These screenshots was using [my blog](http://blog.mogollon.com.ve) in wordpress.
 
 ## TODO
 
-* Pagination
+* Pagination!
+* Ajax when selecting categories
 * more stuffs I don't remember

@@ -100,6 +100,7 @@ export default class PostContainer extends Component {
 				style={styles.homeList}
 				contentContainerStyle={styles.homeListContainer}
 				dataSource={this.state.posts}
+				enableEmptySections={true}
 				renderRow={(post) => {
 					return (
 						<PostItem post={post} onPress={ () => {
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
 	logo: {
     alignSelf: 'stretch',
     // width: 200,
-    height: 200,
+    height: 350,
   },
 	homeList: {
     // backgroundColor: 'red',

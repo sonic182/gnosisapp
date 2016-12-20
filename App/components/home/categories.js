@@ -42,7 +42,7 @@ export default class CategoriesList extends Component {
 
 	constructor (props) {
 		super(props)
-		let ALL_CATEGORY = {name: 'All', ID: 0, selected: true};
+		let ALL_CATEGORY = {name: 'Todo', ID: 0, selected: true};
 		this.state = {
 			categories: [ALL_CATEGORY]
 		}

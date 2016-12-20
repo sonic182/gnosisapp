@@ -11,7 +11,7 @@ import {
 
 import utils from '../../utils/utils';
 
-function BASE_HTML (content) {
+function BASE_HTML (content, img) {
 	return `
 <!DOCTYPE html>
 <html>
@@ -53,6 +53,7 @@ function BASE_HTML (content) {
 	</head>
 	<body>
 		<div class="content">
+			${img ? '<img src="'+img+'"style="width: 100%; height: auto;">' : ''}
 			${content}
 		</div>
 		<script
@@ -95,7 +96,7 @@ export default class PostView extends Component {
 				<WebView
 					ref={(ref) => { this.webview = ref; }}
           style={styles.webview}
-          source={{html: BASE_HTML(post.content)}}
+          source={{html: BASE_HTML(post.content, post.featured_image)}}
           scalesPageToFit={true}
 					onNavigationStateChange={(event) => {
 						// check if url is diferent from data:text/html If so, opens browser

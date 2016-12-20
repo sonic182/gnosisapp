@@ -1,6 +1,7 @@
 
 // let site = 'https://studio182.es/blog'
-let site = '114824088'
+// let site = '114824088'
+let site = 'xn--gnosisespaa-beb.es'
 // let site = 'gnosisespaña.es'
 let url = `https://public-api.wordpress.com/rest/v1.1/sites/${site}/`
 

@@ -13,9 +13,16 @@ At this time the app points to [my Studio182 Blog](https://studio182.es/blog/) i
 3. Install node dependencies with `yarn install`
 4. Start react dev server with `react-native start` and run your app on emulator or device with `react-native run-android`.
 
-## Screenshots (Johanderson Blog Server)
+## Screenshots
+
+These screenshots was using [my blog](http://blog.mogollon.com.ve) in wordpress.
 
 ![Home View](/screenshots/home.jpg?raw=true "Home View")
 <br>
 <br>
 ![Post View](/screenshots/post_view.jpg?raw=true "Post View")
+
+## TODO
+
+* Pagination
+* more stuffs I don't remember

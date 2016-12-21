@@ -37,7 +37,7 @@ export default class Main extends Component {
                 style={styles.menuIcon}
                 name="arrow-left" size={22} style={{padding: 15}} color="#fff" />);
            }
-           return (<Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" />)
+           return (drawer ? <Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" /> : <View/>)
          },
          RightButton: (route, navigator, index, navState) =>{
            return true ? '' :(<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
@@ -60,7 +60,8 @@ export default class Main extends Component {
 
   render() {
 
-    return Platform.OS !== 'android' ?
+    // return Platform.OS !== 'android' ?
+    return true ?
     (
       <Navigator
         initialRoute={this.initialRoute()}

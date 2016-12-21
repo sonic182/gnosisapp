@@ -19,10 +19,16 @@ export default class Home extends Component{
 
   constructor (props) {
     super(props)
-    this.setCategory.bind(this)
   }
 
-  setCategory () {
+  selectedCategory(cat){
+    // (cat) => {
+      category = cat
+      PostsContainerComponent ? PostsContainerComponent.setCategory(cat, {scroll: true}) : false;
+    // }
+  }
+
+  selectCategory(){
 
   }
 
@@ -30,13 +36,11 @@ export default class Home extends Component{
     return (
       <View style={styles.content}>
         <CategoriesList
-          selectedCategory={(cat) => {
-            category = cat
-            PostsContainerComponent.setCategory(cat)
-          }}
+          selectedCategory={this.selectedCategory.bind(this)}
           style={styles.categories} />
         <View style={styles.container}>
-          <PostContainer ref={(postContainer) => { PostsContainerComponent = postContainer}} navigator={this.props.navigator}/>
+          <PostContainer ref={(postContainer) => { PostsContainerComponent = postContainer}}
+            navigator={this.props.navigator}/>
         </View>
       </View>
     )

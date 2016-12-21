@@ -31,12 +31,13 @@ export default class Main extends Component {
       <Navigator.NavigationBar
        routeMapper={{
          LeftButton: (route, navigator, index, navState) => {
-           return (
-             route.back ?
-              <Icon onPress={navigator.pop}
+           if (route.back){
+             return (
+               <Icon onPress={navigator.pop}
                 style={styles.menuIcon}
-                name="arrow-left" size={22} style={{padding: 15}} color="#fff" /> : <View/>)
-          //  return (<Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" />)
+                name="arrow-left" size={22} style={{padding: 15}} color="#fff" />);
+           }
+           return (<Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" />)
          },
          RightButton: (route, navigator, index, navState) =>{
            return true ? '' :(<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
@@ -58,7 +59,9 @@ export default class Main extends Component {
   }
 
   render() {
-    return (
+
+    return Platform.OS !== 'android' ?
+    (
       <Navigator
         initialRoute={this.initialRoute()}
         renderScene={(router, navigator) => {
@@ -67,9 +70,8 @@ export default class Main extends Component {
         navigationBar={this.navigationBar()}
         style={styles.navigator}
       />
-    )
-
-    return (
+    ) :
+    (
       <DrawerLayoutAndroid
         drawerWidth={300}
         ref={(_drawer) => { drawer = _drawer  }}

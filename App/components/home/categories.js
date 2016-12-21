@@ -37,23 +37,31 @@ class Category extends Component {
 export default class CategoriesList extends Component {
 
 	categoriesFilter (c) {
-		return c.post_count !== 0
+		return c.post_count > 0
 	}
 
 	constructor (props) {
 		super(props)
-		let ALL_CATEGORY = {name: 'Todo', ID: 0, selected: true};
+		this.ALL_CATEGORY = {name: 'Todo', ID: 0, selected: true};
 		this.state = {
-			categories: [ALL_CATEGORY]
+			categories: [this.ALL_CATEGORY]
 		}
+		this.focusCategory.bind(this);
+		this.getCategories.bind(this);
+	}
+
+	componentDidMount(){
+		this.getCategories()
+	}
+
+	getCategories(){
 		Http.get('categories')
 		.then((r) => r.json())
 		.then((rJson) => {
 			// console.log('rJson')
 			// console.log(rJson)
-			this.setState({categories: [ALL_CATEGORY, ... rJson.categories.filter(this.categoriesFilter)]})
+			this.setState({categories: [this.ALL_CATEGORY, ... rJson.categories.filter(this.categoriesFilter)]})
 		})
-		this.focusCategory.bind(this);
 	}
 
 	render () {
@@ -77,8 +85,8 @@ export default class CategoriesList extends Component {
 				cat.selected = false;
 			})
 			c.selected = true;
-			this.props.selectedCategory(c)
 			this.setState({categories: this.state.categories})
+			this.props.selectedCategory(c)
 		}
 	}
 }

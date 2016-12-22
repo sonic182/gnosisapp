@@ -21,11 +21,9 @@ export default class Home extends Component{
     super(props)
   }
 
-  selectedCategory(cat){
-    // (cat) => {
+  selectedCategory = (cat) => {
       category = cat
       PostsContainerComponent ? PostsContainerComponent.setCategory(cat, {scroll: true}) : false;
-    // }
   }
 
   selectCategory(){
@@ -36,7 +34,7 @@ export default class Home extends Component{
     return (
       <View style={styles.content}>
         <CategoriesList
-          selectedCategory={this.selectedCategory.bind(this)}
+          selectedCategory={this.selectedCategory}
           style={styles.categories} />
         <View style={styles.container}>
           <PostContainer ref={(postContainer) => { PostsContainerComponent = postContainer}}
@@ -44,10 +42,6 @@ export default class Home extends Component{
         </View>
       </View>
     )
-    // <Image
-    // source={require('../../assets/images/sol_acuario.png')}
-    // style={styles.logo}
-    // ></Image>
   }
 }
 

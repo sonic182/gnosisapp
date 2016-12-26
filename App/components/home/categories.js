@@ -17,6 +17,14 @@ import Category from './category';
 export default class CategoriesList extends Component {
 
 	categoriesFilter (c) {
+		// BUSINESS LOGIC
+		// console.log('c.slug')
+		// console.log(c.slug)
+		
+		// No conferencias posts
+		if (c.slug.match('conferencia')){
+			return false;
+		}
 		return c.post_count > 0
 	}
 

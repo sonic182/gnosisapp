@@ -1,85 +1,61 @@
 import React, {Component} from 'react'
-
 import {
-  // Button,
-  StyleSheet,
-  Alert,
-  Image,
-} from 'react-native'
+	View,
+	Image,
+	Text,
+	StyleSheet,
+	ScrollView,
+} from 'react-native';
 
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
-  // Text,
-  Card, CardItem, Text, Icon
- } from 'native-base';
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import SidebarItem from './sidebar-item';
 
 export default class Sidebar extends Component {
 
   render () {
 
-    // <Header>
-    // <Title>Gnosis España</Title>
-    // </Header>
     return (
-      <Container>
-        <Content>
-          <Image
-            style={{width: 300, height: 150}}
-            source={{uri: 'http://gnosisespaña.es/wp-content/uploads/2016/09/Encontrar-EsLibertad.jpg'}}
-          />
-          <Card>
-            <CardItem>
-                <Icon name="logo-googleplus" style={{ color: '#DD5044' }} />
-                <Text>Google Plus</Text>
-            </CardItem>
-         </Card>
-        </Content>
-      </Container>
+      <View style={styles.sidebar}>
+				<Image source={{uri: 'http://gnosiscolombia.org/images/inicio/socrates4.jpg' || 'https://placekitten.com/201/301'}} style={styles.sidebarImg}>
+					<Text style={styles.imgText}>
+						Gnosis España
+					</Text>
+				</Image>
+				<ScrollView>
+					<SidebarItem text="Publicaciones" icon="pencil" active={true} />
+					<SidebarItem text="Conferencias" icon="bookmark" />
+					<SidebarItem text="Libros" icon="book" />
+					<SidebarItem text="Audios" icon="headphones" />
+					<SidebarItem text="Sedes" icon="globe" />
+					<SidebarItem text="Chat" icon="comments" />
+					<SidebarItem text="Ayuda" icon="info-circle" />
+				</ScrollView>
+      </View>
     )
-    // <Button style={{width: 300}} onPress={() => {
-    //   alert('asdf')
-    // }}>
-    // <Text style={{color: '#fff'}}>Conferencias</Text>
-    // </Button>
-    // <Button style={{width: 300, backgroundColor: 'red'}}>
-    // <Text style={{color: '#fff'}}>Conferencias</Text>
-    // </Button>
-    // <Button style={{width: 300, marginVertical: 20, backgroundColor: 'red'}}>
-    // <Text style={{color: '#fff'}}>Primera Camara</Text>
-    // </Button>
-    // <Button style={{width: 300, marginVertical: 20, backgroundColor: 'purple'}}>
-    // <Text style={{color: '#fff'}}>Primera Camara</Text>
-    // </Button>
   }
 
-  alert () {
-    Alert.alert('some alert')
-  }
 }
 
-const style = StyleSheet.create({
-  header: {
-    backgroundColor: 'red',
-    height: 200,
-    paddingVertical: 20,
-  },
-  button: {
-    marginTop: 10
-  },
-  container: {
-    // flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'space-around'
-  },
-  content: {
-
-  }
+const styles = StyleSheet.create({
+	sidebar: {
+		flex: 1,
+		// alignItems: 'center',
+		// justifyContent: 'space-between'
+	},
+	sidebarImg: {
+		height: 200,
+		// padding: 15,
+		justifyContent: 'flex-end',
+	},
+	imgText: {
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 18,
+		paddingVertical: 10,
+		paddingHorizontal: 15,
+		backgroundColor: 'rgba(0, 0, 0, 0.8)',
+		// flex: 1,
+		// alignItems: 'center',
+		// alignSelf: 'center',
+		// justifyContent: 'center'
+	}
 })

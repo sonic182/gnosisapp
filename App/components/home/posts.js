@@ -33,6 +33,10 @@ export default class PostContainer extends Component {
 		this.getPosts()
 	}
 
+	customPostsFilter (post) {
+		return post.title.toLowerCase().match(/conferencia/g) ? false : true;
+	}
+
 	getPosts = (opts) => {
 		this.setState({refreshing: true});
 
@@ -51,10 +55,13 @@ export default class PostContainer extends Component {
 		let $promise = Http.get(Http.urlParams('posts', params))
 		$promise.then((r) => r.json())
 		.then((rJson) => {
-			let posts = scroll ? rJson.posts : [...this.posts, ...rJson.posts];
+			let responsePosts = rJson.posts;
+			responsePosts.filter(this.customPostsFilter);
+
+			let posts = scroll ? responsePosts : [...this.posts, ...responsePosts];
 			this.posts = posts
 
-			this.lastResponse = rJson.posts;
+			this.lastResponse = responsePosts;
 			params.category ?
 				this.setState({posts: this.ds.cloneWithRows(this.posts.filter(this.hasCategory(cat)))}) :
 				this.setState({posts: this.ds.cloneWithRows(this.posts)});

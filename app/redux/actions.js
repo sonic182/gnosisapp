@@ -39,8 +39,8 @@ export function getPosts(opts) {
   return { type: GET_POSTS, opts }
 }
 
-export function getPostsSuccess(res) {
-  return { type: GET_POSTS_SUCCES, res }
+export function getPostsSuccess(data) {
+  return { type: GET_POSTS_SUCCES, data }
 }
 
 export function getPostsFail(res) {
@@ -56,7 +56,7 @@ export function fetchPosts(opts) {
     opts = opts || {}
     dispatch(getPosts(opts))
 
-    let category = opts.category ? opts.category.category : false
+    let category = opts.category ? opts.category : false
     let params = {pretty: true, offset: offset, number: NUMBER};
 
     if ( category && category.ID !== 0)
@@ -74,7 +74,7 @@ export function fetchPosts(opts) {
     .then((rJson) => {
       // console.log('rJson.posts.length')
       // console.log(rJson.posts.length)
-      return dispatch(getPostsSuccess({otps: opts, posts: rJson}))
+      return dispatch(getPostsSuccess({res: rJson, opts: opts}))
     })
     .catch((err) => {
       dispatch(getPostsFail({opts}))

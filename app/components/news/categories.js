@@ -76,7 +76,7 @@ class CategoriesList extends Component {
 
 	setCategory (c) {
 		this.props.setCategory(c)
-		this.props.fetchPosts({category: c})
+		this.props.fetchPosts(c)
 	}
 
 	focusCategory (c) {

@@ -90,7 +90,7 @@ function newsApp(state = initialStateNews(), action) {
 		})
 
 		case GET_POSTS_SUCCES:
-		let posts = state.ds.cloneWithRows(action.res.posts.posts)
+		let posts = state.ds.cloneWithRows(action.data.res.posts)
 		return Object.assign({}, state, {
 			refreshing: false,
 			posts: posts,

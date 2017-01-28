@@ -54,11 +54,13 @@ function navigationApp(state = initialStateNavigation, action) {
 
 const initialStateNews = () => {
 	let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.ID !== r2.ID})
+	let all_categories = {name: 'Todo', ID: 0, selected: true};
 	return {
-		categories: [{name: 'Todo', ID: 0, selected: true}],
+		categories: [all_categories],
 		posts: ds.cloneWithRows([{
 			title: 'Cargando...',
 		}]),
+		category: all_categories,
 		refreshing: false,
 		error: false,
 		ds: ds
@@ -84,9 +86,11 @@ function newsApp(state = initialStateNews(), action) {
 		})
 
 		case GET_POSTS:
+		let category = action.opts.category
 		return Object.assign({}, state, {
 			refreshing: true,
 			error: false,
+			category: category ? category : state.category
 		})
 
 		case GET_POSTS_SUCCES:

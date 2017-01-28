@@ -52,28 +52,20 @@ export function fetchPosts(opts) {
     NUMBER = 20,
     offset= 0;
 
-  return dispatch => {
+  return (dispatch, getState) => {
     opts = opts || {}
     dispatch(getPosts(opts))
 
-    let category = opts.category ? opts.category : false
+    let category = opts.category ? opts.category : getState().newsApp.category
     let params = {pretty: true, offset: offset, number: NUMBER};
 
     if ( category && category.ID !== 0)
 			params.category = category.slug
 
-    // console.log('opts')
-    // console.log(opts)
-    //
-    // console.log('params')
-    // console.log(params)
-
     let $promise = Http.get(Http.urlParams('posts', params))
 
     $promise.then((r) => r.json())
     .then((rJson) => {
-      // console.log('rJson.posts.length')
-      // console.log(rJson.posts.length)
       return dispatch(getPostsSuccess({res: rJson, opts: opts}))
     })
     .catch((err) => {

@@ -10,6 +10,7 @@ import {
   // DrawerLayoutAndroid,
   Platform,
   BackAndroid,
+  Image,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -40,12 +41,18 @@ class Main extends Component {
       <Navigator.NavigationBar
        routeMapper={{
          LeftButton: (route, navigator, index, navState) => {
-           if (route.back){
+           if (index > 0){
              return (
                <Icon onPress={navigator.pop}
                 style={styles.menuIcon}
                 name="arrow-left" size={22} style={{padding: 15}} color="#fff" />);
            }
+           return (
+             <Image
+              source={require('../assets/images/sol_acuario.png')}
+              style={styles.sol}
+            />
+           )
           //  return (Platform.OS === 'android' ? <Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" /> : <View/>)
            return (<View/>)
          },
@@ -173,6 +180,12 @@ const styles = StyleSheet.create({
   scene: {
     flex: 1,
     // marginTop: 55,
+  },
+  sol: {
+    marginTop: 2,
+    marginLeft: 2,
+    height: 53,
+    width: 53
   }
 })
 

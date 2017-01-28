@@ -91,8 +91,9 @@ class Posts extends Component {
 	}
 
 	_onRefresh() {
-		this.offset = this.INITIAL_OFFSET;
-    this.getPosts({scroll: true})
+		// this.offset = this.INITIAL_OFFSET;
+    // this.getPosts({scroll: true})
+		this.props.fetchPosts()
   }
 
 	render () {

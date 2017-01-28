@@ -10,6 +10,7 @@ import {
 	SET_CATEGORY,
 	SET_CATEGORIES,
 
+	SET_LIST_VIEW_POSTS,
 	GET_POSTS,
 	GET_POSTS_SUCCES,
 	GET_POSTS_FAIL,
@@ -54,17 +55,22 @@ function navigationApp(state = initialStateNavigation, action) {
 
 const initialStateNews = () => {
 	let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.ID !== r2.ID})
-	let all_categories = {name: 'Todo', ID: 0, selected: true};
+	let all_categories = {name: 'Todo', ID: 0};
+
 	return {
 		categories: [all_categories],
 		posts: ds.cloneWithRows([{
 			title: 'Cargando...',
 		}]),
+		lv: null, // list view component, to scroll to top if required
+		_posts: [],
 		category: all_categories,
 		refreshing: false,
+		last_response_count: 0,
 		error: false,
 		ds: ds
 	}
+
 }
 
 function newsApp(state = initialStateNews(), action) {
@@ -72,17 +78,17 @@ function newsApp(state = initialStateNews(), action) {
 
 		case SET_CATEGORY:
 		return Object.assign({}, state, {
-			categories: state.categories.map((c) => {
-				c.selected = false
-				if (c.ID == action.category.ID)
-					c.selected = true
-				return c
-			})
+			category: action.category
 		})
 
 		case SET_CATEGORIES:
 		return Object.assign({}, state, {
 			categories: action.categories,
+		})
+
+		case SET_LIST_VIEW_POSTS:
+		return Object.assign({}, state, {
+			lv: action.lv,
 		})
 
 		case GET_POSTS:
@@ -94,10 +100,17 @@ function newsApp(state = initialStateNews(), action) {
 		})
 
 		case GET_POSTS_SUCCES:
-		let posts = state.ds.cloneWithRows(action.data.res.posts)
+		let res_posts = action.data.res.posts;
+		let _posts = action.data.opts.scroll ? res_posts : [...state._posts, ...res_posts]
+		let postsDS = state.ds.cloneWithRows(_posts)
+		if (action.data.opts.scroll)
+			state.lv.scrollTo({y: 0, animated: true})
+
 		return Object.assign({}, state, {
+			last_response_count: _posts.length,
 			refreshing: false,
-			posts: posts,
+			posts: postsDS,
+			_posts: _posts,
 			error: false,
 		})
 

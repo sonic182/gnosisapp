@@ -11,6 +11,7 @@ export const SET_NAVIGATOR = 'SET_NAVIGATOR'
 export const SET_CATEGORY = 'SET_CATEGORY'
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 
+export const SET_LIST_VIEW_POSTS = 'SET_LIST_VIEW_POSTS'
 export const GET_POSTS = 'GET_POSTS'
 export const GET_POSTS_SUCCES = 'GET_POSTS_SUCCES'
 export const GET_POSTS_FAIL = 'GET_POSTS_FAIL'
@@ -35,6 +36,10 @@ export function setCategories(categories) {
   return { type: SET_CATEGORIES, categories }
 }
 
+export function setListViewPosts(lv) {
+  return { type: SET_LIST_VIEW_POSTS, lv }
+}
+
 export function getPosts(opts) {
   return { type: GET_POSTS, opts }
 }
@@ -55,6 +60,9 @@ export function fetchPosts(opts) {
   return (dispatch, getState) => {
     opts = opts || {}
     dispatch(getPosts(opts))
+    if (opts.offset){
+      offset = opts.offset == '+' ? offset + 20 : 0
+    }
 
     let category = opts.category ? opts.category : getState().newsApp.category
     let params = {pretty: true, offset: offset, number: NUMBER};

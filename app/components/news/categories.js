@@ -24,8 +24,6 @@ class CategoriesList extends Component {
 
 	categoriesFilter (c) {
 		// BUSINESS LOGIC
-		// console.log('c.slug')
-		// console.log(c.slug)
 
 		// No conferencias posts
 		if (c.slug.match('conferencia')){
@@ -36,7 +34,7 @@ class CategoriesList extends Component {
 
 	constructor (props) {
 		super(props)
-		this.ALL_CATEGORY = {name: 'Todo', ID: 0, selected: true};
+		this.ALL_CATEGORY = {name: 'Todo', ID: 0};
 		this.state = {
 			categories: [this.ALL_CATEGORY]
 		}
@@ -52,8 +50,6 @@ class CategoriesList extends Component {
 		Http.get('categories')
 		.then((r) => r.json())
 		.then((rJson) => {
-			// console.log('rJson')
-			// console.log(rJson)
 			this.props.setCategories([this.ALL_CATEGORY, ... rJson.categories.filter(this.categoriesFilter)])
 			// this.setState({categories: [this.ALL_CATEGORY, ... rJson.categories.filter(this.categoriesFilter)]})
 		})
@@ -68,7 +64,7 @@ class CategoriesList extends Component {
 				contentContainerStyle={styles.categoriesContent}
 				>
 				{this.props.categories.map((c) =>
-					<Category onPress={()=>{this.setCategory(c)}} key={c.ID.toString()} name={c.name} selected={c.selected} />
+					<Category onPress={()=>{this.setCategory(c)}} key={c.ID.toString()} name={c.name} selected={ this.props.category.ID == c.ID} />
 				)}
 			</ScrollView>
 		)
@@ -76,7 +72,7 @@ class CategoriesList extends Component {
 
 	setCategory (c) {
 		this.props.setCategory(c)
-		this.props.fetchPosts(c)
+		this.props.fetchPosts({category: c, scroll: true})
 	}
 
 	focusCategory (c) {
@@ -104,7 +100,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, props) => {
 	return {
-		categories: state.newsApp.categories
+		categories: state.newsApp.categories,
+		category: state.newsApp.category,
 	}
 }
 
@@ -112,7 +109,7 @@ const dispatchToProps = (dispatch, props) => {
 	return {
 		setCategory: (cat) => {dispatch(setCategory(cat))},
 		setCategories: (cat) => {dispatch(setCategories(cat))},
-		fetchPosts: (cat) => {dispatch(fetchPosts({category: cat}))}
+		fetchPosts: (opts) => {dispatch(fetchPosts(opts))}
 	}
 }
 

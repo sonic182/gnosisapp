@@ -13,6 +13,7 @@ import {connect} from 'react-redux'
 import {
 	pushRoute,
 	fetchPosts,
+	setListViewPosts,
 } from '../../redux/actions'
 
 class Posts extends Component {
@@ -35,53 +36,52 @@ class Posts extends Component {
 	componentDidMount () {
 		// this.getPosts()
 		this.props.fetchPosts()
+		this.props.setListViewPosts(this.lv)
 	}
 
 	customPostsFilter (post) {
 		return post.title.toLowerCase().match(/conferencia/g) ? false : true;
 	}
 
-	getPosts = (opts) => {
-		this.setState({refreshing: true});
+	// getPosts = (opts) => {
+	// 	this.setState({refreshing: true});
+	//
+	// 	opts = opts || {};
+	// 	let {scroll} = opts
+	// 	let cat = this.category;
+	// 	this.offset = scroll ? 0 : this.offset;
+	//
+	// 	let params = {pretty: true, offset: this.offset, number: this.NUMBER};
+	//
+	// 	if ( cat && cat.ID !== 0)
+	// 		params.category = cat.slug
+	//
+	// 	let $promise = Http.get(Http.urlParams('posts', params))
+	//
+	// 	$promise.then((r) => r.json())
+	// 	.then((rJson) => {
+	// 		let responsePosts = rJson.posts;
+	// 		responsePosts.filter(this.customPostsFilter);
+	//
+	// 		let posts = scroll ? responsePosts : [...this.posts, ...responsePosts];
+	// 		this.posts = posts
+	//
+	// 		this.lastResponse = responsePosts;
+	// 		params.category ?
+	// 			this.setState({posts: this.ds.cloneWithRows(this.posts.filter(this.hasCategory(cat)))}) :
+	// 			this.setState({posts: this.ds.cloneWithRows(this.posts)});
+	//
+	// 		this.setState({refreshing: false});
+	// 		if (scroll)
+	// 			this.lv.scrollTo({y: 0, animated: true})
+	// 	})
+	// 	return $promise
+	// }
 
-		opts = opts || {};
-		let {scroll} = opts
-		let cat = this.category;
-		this.offset = scroll ? 0 : this.offset;
-
-		let params = {pretty: true, offset: this.offset, number: this.NUMBER};
-		// console.log('params')
-		// console.log(params)
-
-		if ( cat && cat.ID !== 0)
-			params.category = cat.slug
-
-		let $promise = Http.get(Http.urlParams('posts', params))
-
-		$promise.then((r) => r.json())
-		.then((rJson) => {
-			let responsePosts = rJson.posts;
-			responsePosts.filter(this.customPostsFilter);
-
-			let posts = scroll ? responsePosts : [...this.posts, ...responsePosts];
-			this.posts = posts
-
-			this.lastResponse = responsePosts;
-			params.category ?
-				this.setState({posts: this.ds.cloneWithRows(this.posts.filter(this.hasCategory(cat)))}) :
-				this.setState({posts: this.ds.cloneWithRows(this.posts)});
-
-			this.setState({refreshing: false});
-			if (scroll)
-				this.lv.scrollTo({y: 0, animated: true})
-		})
-		return $promise
-	}
-
-	setCategory = (cat, opts) => {
-		this.category = cat;
-		this.getPosts(opts);
-	}
+	// setCategory = (cat, opts) => {
+	// 	this.category = cat;
+	// 	this.getPosts(opts);
+	// }
 
 	hasCategory(cat){
 		return (post) => {
@@ -93,7 +93,7 @@ class Posts extends Component {
 	_onRefresh() {
 		// this.offset = this.INITIAL_OFFSET;
     // this.getPosts({scroll: true})
-		this.props.fetchPosts()
+		this.props.fetchPosts({offset: 0 })
   }
 
 	render () {
@@ -110,11 +110,12 @@ class Posts extends Component {
 				enableEmptySections={true}
 				onEndReached={() => {
 					// return alert('onEndReached')
-					// if (this.lastResponse.length == 20){
+					if (this.props.last_response_count == 20 && ! this.props.refreshing){
 					// 	this.offset = this.offset + this.NUMBER;
 					// 	// this.setState({offset: offset });
-					// 	this.getPosts()
-					// }
+						// alert('more posts')
+						this.props.fetchPosts({offset: '+'})
+					}
 				}}
 				renderRow={(post) => {
 					return (
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
 
 const stateToProps = (state) => {
 	return {
+		last_response_count: state.newsApp.last_response_count,
 		posts: state.newsApp.posts,
 		refreshing: state.newsApp.refreshing
 	}
@@ -152,6 +154,7 @@ const dispatchToProps = (dispatch, props) => {
   return {
     pushRoute: (route) => {dispatch(pushRoute(route))},
     fetchPosts: (opts) => {dispatch(fetchPosts(opts))},
+    setListViewPosts: (lv) => {dispatch(setListViewPosts(lv))},
   }
 }
 

@@ -7,6 +7,12 @@ import {
 
 	Platform,
 } from 'react-native';
+import {connect} from 'react-redux'
+import {
+	setCategory,
+	setCategories,
+	fetchPosts,
+} from '../../redux/actions'
 
 import utils from '../../utils/utils';
 import Http from '../../services/http';
@@ -14,13 +20,13 @@ const Touchable = utils.Touchable;
 
 import Category from './category';
 
-export default class CategoriesList extends Component {
+class CategoriesList extends Component {
 
 	categoriesFilter (c) {
 		// BUSINESS LOGIC
 		// console.log('c.slug')
 		// console.log(c.slug)
-		
+
 		// No conferencias posts
 		if (c.slug.match('conferencia')){
 			return false;
@@ -48,7 +54,8 @@ export default class CategoriesList extends Component {
 		.then((rJson) => {
 			// console.log('rJson')
 			// console.log(rJson)
-			this.setState({categories: [this.ALL_CATEGORY, ... rJson.categories.filter(this.categoriesFilter)]})
+			this.props.setCategories([this.ALL_CATEGORY, ... rJson.categories.filter(this.categoriesFilter)])
+			// this.setState({categories: [this.ALL_CATEGORY, ... rJson.categories.filter(this.categoriesFilter)]})
 		})
 	}
 
@@ -60,11 +67,16 @@ export default class CategoriesList extends Component {
 				style={styles.categories}
 				contentContainerStyle={styles.categoriesContent}
 				>
-				{this.state.categories.map((c) =>
-					<Category onPress={this.focusCategory(c)} key={c.ID.toString()} name={c.name} selected={c.selected} />
+				{this.props.categories.map((c) =>
+					<Category onPress={()=>{this.setCategory(c)}} key={c.ID.toString()} name={c.name} selected={c.selected} />
 				)}
 			</ScrollView>
 		)
+	}
+
+	setCategory (c) {
+		this.props.setCategory(c)
+		this.props.fetchPosts({category: c})
 	}
 
 	focusCategory (c) {
@@ -89,3 +101,19 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 	},
 })
+
+const mapStateToProps = (state, props) => {
+	return {
+		categories: state.newsApp.categories
+	}
+}
+
+const dispatchToProps = (dispatch, props) => {
+	return {
+		setCategory: (cat) => {dispatch(setCategory(cat))},
+		setCategories: (cat) => {dispatch(setCategories(cat))},
+		fetchPosts: (cat) => {dispatch(fetchPosts({category: cat}))}
+	}
+}
+
+export default connect(mapStateToProps, dispatchToProps)(CategoriesList)

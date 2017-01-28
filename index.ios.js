@@ -1,13 +1,13 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+* Sample React Native App
+* https://github.com/facebook/react-native
+* @flow
+*/
 
- import {
-   AppRegistry,
- } from 'react-native';
+import {
+  AppRegistry,
+} from 'react-native';
 
- import App from './App/components/main';
+import App from './app/app';
 
- AppRegistry.registerComponent('gnosisapp', () => App);
+AppRegistry.registerComponent('gnosisapp', () => App);

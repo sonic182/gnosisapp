@@ -9,8 +9,13 @@ import {
 import Http from '../../services/http';
 import PostItem from './post';
 
+import {connect} from 'react-redux'
+import {
+	pushRoute,
+	fetchPosts,
+} from '../../redux/actions'
 
-export default class PostContainer extends Component {
+class Posts extends Component {
 
 	constructor (props) {
 		super(props)
@@ -21,16 +26,15 @@ export default class PostContainer extends Component {
 		this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.ID !== r2.ID});
 		this.state = {
 			refreshing: false,
-			posts: this.ds.cloneWithRows([{
-				title: 'Cargando...',
-			}]),
+			posts: this.ds.cloneWithRows([{title: 'Cargando...'}]),
 		};
 
 		this.posts = this.state.posts;
 	}
 
 	componentDidMount () {
-		this.getPosts()
+		// this.getPosts()
+		this.props.fetchPosts()
 	}
 
 	customPostsFilter (post) {
@@ -53,6 +57,7 @@ export default class PostContainer extends Component {
 			params.category = cat.slug
 
 		let $promise = Http.get(Http.urlParams('posts', params))
+
 		$promise.then((r) => r.json())
 		.then((rJson) => {
 			let responsePosts = rJson.posts;
@@ -93,28 +98,28 @@ export default class PostContainer extends Component {
 	render () {
 		return (
 			<ListView
-				ref={(lv) => {
-					this.lv = lv
-				}}
+				ref={(lv) => { this.lv = lv }}
 				refreshControl={
 					<RefreshControl
-						refreshing={this.state.refreshing}
+						refreshing={this.props.refreshing}
 						onRefresh={this._onRefresh.bind(this)}
 					/>}
 				style={styles.homeList}
-				dataSource={this.state.posts}
+				dataSource={this.props.posts}
 				enableEmptySections={true}
 				onEndReached={() => {
 					// return alert('onEndReached')
-					if (this.lastResponse.length == 20){
-						this.offset = this.offset + this.NUMBER;
-						// this.setState({offset: offset });
-						this.getPosts()
-					}
+					// if (this.lastResponse.length == 20){
+					// 	this.offset = this.offset + this.NUMBER;
+					// 	// this.setState({offset: offset });
+					// 	this.getPosts()
+					// }
 				}}
 				renderRow={(post) => {
 					return (
-						<PostItem post={post} onPress={this.postShow(post)}/>
+						<PostItem post={post} onPress={() => {
+							this.props.pushRoute({title: 'PostView', post: post, back: true, my_title: post.title})
+						}}/>
 					)
 				}}
 				/>
@@ -123,7 +128,7 @@ export default class PostContainer extends Component {
 
 	postShow = (post) => {
 		return () => {
-			post.URL ? this.props.navigator.push({title: 'PostView', post: post, back: true, my_title: post.title}) : false;
+			post.URL ? this.props.navigator.push() : false;
 		}
 	}
 
@@ -134,3 +139,19 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   }
 })
+
+const stateToProps = (state) => {
+	return {
+		posts: state.newsApp.posts,
+		refreshing: state.newsApp.refreshing
+	}
+}
+
+const dispatchToProps = (dispatch, props) => {
+  return {
+    pushRoute: (route) => {dispatch(pushRoute(route))},
+    fetchPosts: (opts) => {dispatch(fetchPosts(opts))},
+  }
+}
+
+export default connect(stateToProps, dispatchToProps)(Posts)

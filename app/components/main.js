@@ -7,20 +7,29 @@ import {
   Navigator,
   NavigationBar,
   Alert,
-  DrawerLayoutAndroid,
+  // DrawerLayoutAndroid,
   Platform,
   BackAndroid,
 } from 'react-native';
 
+import { connect } from 'react-redux';
+import {
+	setNavigator,
+	pushRoute,
+	popRoute,
+ } from '../redux/actions'
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import utils from '../utils/utils'
 
-import Home from './home/home';
+import News from './news/news';
+import Menu from './layout/menu';
 import Sidebar from './layout/sidebar';
 import PostView from './post/post_show';
 
-let drawer;
-export default class Main extends Component {
+// let drawer;
+class Main extends Component {
+
   constructor (props, context) {
     super(props, context)
     this.renderScene.bind(this)
@@ -37,7 +46,8 @@ export default class Main extends Component {
                 style={styles.menuIcon}
                 name="arrow-left" size={22} style={{padding: 15}} color="#fff" />);
            }
-           return (Platform.OS === 'android' ? <Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" /> : <View/>)
+          //  return (Platform.OS === 'android' ? <Icon onPress={this.openDrawer} style={styles.menuIcon} name="bars" size={22} style={{padding: 15}} color="#fff" /> : <View/>)
+           return (<View/>)
          },
          RightButton: (route, navigator, index, navState) =>{
            return true ? '' :(<Icon style={styles.menuIcon} name="check" size={30} color="#fff" />)
@@ -54,16 +64,34 @@ export default class Main extends Component {
       />)
   }
 
-  openDrawer() {
-    drawer.openDrawer()
+  // openDrawer() {
+  //   drawer.openDrawer()
+  // }
+
+  initialRoute () {
+    return { title: 'Menu', index: 0 }
+  }
+
+  allRoutes () {
+    return [
+      { title: 'Menu', index: 0 },
+      { title: 'News', index: 1 },
+      { title: 'PostView', index: 2, post: null },
+    ]
+  }
+
+  componentDidMount(){
+    // add nav to redux
+    this.props.setNavigator({navigator: this.nav, route: this.initialRoute()})
   }
 
   render() {
 
-    // return true ?
-    return Platform.OS !== 'android' ?
+    return true ?
+    // return Platform.OS !== 'android' ?
     (
       <Navigator
+        ref={(nav) => {this.nav = nav}}
         initialRoute={this.initialRoute()}
         renderScene={(router, navigator) => {
           return this.renderScene(router, navigator, this)
@@ -90,38 +118,39 @@ export default class Main extends Component {
     );
   }
 
-  initialRoute () {
-    return { title: 'Home', index: 0 }
-  }
-
   renderScene (route, navigator, dis) {
     var navigator;
 
     if (Platform.OS === 'android') {
       BackAndroid.addEventListener('hardwareBackPress', () => {
           if (navigator && navigator.getCurrentRoutes().length > 1) {
-              navigator.pop();
+              // navigator.pop();
+              this.props.popRoute()
               return true;
           }
           return false;
       });
     }
 
+
     switch(route.title) {
-      case 'Home':
+      case 'News':
         return (
-          <Home navigator={navigator} style={styles.scene} title={route.title} />
+          <News style={styles.scene} title={route.title} />
         )
-      break;
+      case 'Menu':
+        return (
+          <Menu/>
+        )
       case 'PostView':
         return (
           <PostView style={styles.scene} navigator={navigator} post={route.post}/>
         )
-      break;
-    };
-    return (
-      <Text>Error render scene</Text>
-    );
+      default:
+      return (
+        <Text>Error render scene</Text>
+      )
+    }
   }
 }
 
@@ -146,3 +175,18 @@ const styles = StyleSheet.create({
     // marginTop: 55,
   }
 })
+
+// const stateToProps = (state, props) => {
+//   return {
+//
+//   }
+// }
+
+const dispatchToProps = (dispatch, props) => {
+  return {
+    setNavigator: (obj) => {dispatch(setNavigator(obj))},
+    popRoute: () => {dispatch(popRoute())}
+  }
+}
+
+export default connect(null, dispatchToProps)(Main)

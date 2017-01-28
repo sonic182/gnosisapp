@@ -15,7 +15,9 @@ export default class Sidebar extends Component {
 
     return (
       <View style={styles.sidebar}>
-				<Image source={{uri: 'http://gnosiscolombia.org/images/inicio/socrates4.jpg' || 'https://placekitten.com/201/301'}} style={styles.sidebarImg}>
+				<Image
+				source={{uri: 'http://gnosiscolombia.org/images/inicio/socrates4.jpg' || 'https://placekitten.com/201/301'}} 
+				style={styles.sidebarImg}>
 					<Text style={styles.imgText}>
 						Gnosis España
 					</Text>

@@ -15,7 +15,7 @@ import PostContainer from './posts';
 
 let category = null;
 let PostsContainerComponent = null;
-export default class Home extends Component{
+export default class News extends Component{
 
   constructor (props) {
     super(props)
@@ -23,12 +23,14 @@ export default class Home extends Component{
 
   selectedCategory = (cat) => {
       category = cat
+      console.log('PostsContainerComponent')
+      console.log(PostsContainerComponent)
       PostsContainerComponent ? PostsContainerComponent.setCategory(cat, {scroll: true}) : false;
   }
 
-  selectCategory(){
-
-  }
+  // selectCategory(){
+  //
+  // }
 
   render () {
     return (
@@ -37,8 +39,7 @@ export default class Home extends Component{
           selectedCategory={this.selectedCategory}
           style={styles.categories} />
         <View style={styles.container}>
-          <PostContainer ref={(postContainer) => { PostsContainerComponent = postContainer}}
-            navigator={this.props.navigator}/>
+          <PostContainer ref={(postContainer) => { PostsContainerComponent = postContainer}}/>
         </View>
       </View>
     )

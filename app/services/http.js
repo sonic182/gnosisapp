@@ -6,10 +6,9 @@ let site = 'xn--gnosisespaa-beb.es'
 let url = `https://public-api.wordpress.com/rest/v1.1/sites/${site}/`
 
 let Http = {
-	get (path, options){
+	get (path, options={}){
 		let uri = `${url}${path}`
-		// console.log('uri')
-		// console.log(uri)
+
 		return fetch(uri, options)
 	},
 	urlParams (url, params) {

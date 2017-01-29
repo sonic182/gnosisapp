@@ -19,18 +19,20 @@ class MenuItem extends Component{
 		const {icon, size, color, text} = this.props
 		return (
 			<TouchableHighlight onPress={() => {
-				this.props.route ? this.props.pushRoute() : alert('Esta sección no está disponible')
+				this.props.route ?
+					this.props.pushRoute() : this.props.onClick ?
+						this.props.onClick() : alert('Esta sección no está disponible')
 			}}>
-			<View style={this.props.route ? styles.content : styles.no_available}>
+			<View style={this.props.route || this.props.onClick ? styles.content : styles.no_available}>
 
 				<Icon onPress={navigator.pop}
 				 style={styles.menuIcon}
 				 name={icon}
 				 size={size || 30}
-				 style={styles.icon}
+				 style={this.props.route || this.props.onClick ? styles.icon : styles.icon_no_available}
 				 color={color || '#444444'} />
 
-				<Text style={styles.text}>
+				<Text style={this.props.route || this.props.onClick ? styles.text : styles.text_no_available}>
 					{text}
 				</Text>
 			</View>
@@ -46,18 +48,31 @@ const styles = StyleSheet.create({
 		padding: 15,
 	},
 	no_available: {
-		backgroundColor: '#feb4b4',
+		backgroundColor: 'white',
 		width: 140,
 		padding: 15,
 	},
 	icon: {
 		padding: 5,
-		textAlign: 'center'
+		textAlign: 'center',
+		color: '#444444',
+	},
+	icon_no_available: {
+		padding: 5,
+		textAlign: 'center',
+		color: 'gray',
 	},
 	text: {
-		fontSize: 18,
+		fontSize: 16,
 		textAlign: 'center',
+		// color: '#444444'
 		color: '#444444'
+	},
+	text_no_available: {
+		fontSize: 16,
+		textAlign: 'center',
+		// color: '#444444'
+		color: 'gray'
 	}
 })
 

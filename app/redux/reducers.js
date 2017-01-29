@@ -20,7 +20,8 @@ import {
 
 const initialStateNavigation = {
 	navigator: null,
-	stack: []
+	stack: [],
+	current: null
 }
 
 function navigationApp(state = initialStateNavigation, action) {
@@ -30,7 +31,8 @@ function navigationApp(state = initialStateNavigation, action) {
 		let stack = state.stack; stack.push(action.route)
 		return Object.assign({}, state, {
 			// navigator: state.navigator.push(action.route)
-			stack: stack
+			stack: stack,
+			current: action.route
 		})
 
 		case POP_ROUTE:
@@ -40,12 +42,14 @@ function navigationApp(state = initialStateNavigation, action) {
 			// navigator: state.navigator.pop(),
 			navigator: state.navigator,
 			stack: state.stack,
+			current: state.stack[state.stack.length - 1]
 		})
 
 		case SET_NAVIGATOR:
 		return Object.assign({}, state, {
 			navigator: action.navigator,
-			stack: [action.route]
+			stack: [action.route],
+			current: action.route
 		})
 
 		default:

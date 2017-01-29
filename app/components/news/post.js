@@ -121,7 +121,10 @@ const styles = StyleSheet.create({
 		color: '#222222',
 	},
 	logo: {
-    alignSelf: 'stretch',
+    // alignSelf: 'stretch',
+    // alignSelf: 'center',
+    // height: 350,
+		resizeMode: 'contain',
     height: 350,
   },
 	PostFooterElement: {

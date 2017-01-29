@@ -14,7 +14,10 @@ export default class Menu extends Component{
 			<View style={styles.container}>
 				<View style={styles.optionsContainer}>
 					<MenuItem icon='newspaper-o' text='Noticias' route={{title: 'News', index: 1}}/>
-					<MenuItem icon='globe' text='Sedes' route={{title: 'Sedes', index: 1}}/>
+					{
+						//<MenuItem icon='globe' text='Sedes' route={{title: 'Sedes', index: 1}}/>
+					}
+					<MenuItem icon='globe' text='Sedes'/>
 				</View>
 				<View style={styles.optionsContainer}>
 					<MenuItem icon='microphone' text='Conferencias'/>

@@ -2,20 +2,16 @@
 
 Simple wordpress react-native client for [Gnosis España](http://gnosisespaña.es) website.
 
-## Beta
-<!-- At this time the app points to [my blog](http://blog.mogollon.com.ve) in wordpress. -->
-At this time the app points to [my Studio182 Blog](https://studio182.es/blog/) in wordpress.
 
 ## Development
 
 1. See [React Native Getting started](https://facebook.github.io/react-native/docs/getting-started.html#content) to start with your react native dev environment
 2. Clone this repo
 3. Install node dependencies with `yarn install`
-4. Start react dev server with `react-native start` and run your app on emulator or device with `react-native run-android`.
+4. Start react dev server with `react-native start`
+5. Run the app on emulator or real device with `react-native run-android`.
 
 ## Screenshots
-
-These screenshots was using [my blog](http://blog.mogollon.com.ve) in wordpress.
 
 ![Home View](/screenshots/home.jpg?raw=true "Home View")
 <br>
@@ -24,6 +20,4 @@ These screenshots was using [my blog](http://blog.mogollon.com.ve) in wordpress.
 
 ## TODO
 
-* Pagination!
-* Ajax when selecting categories
-* more stuffs I don't remember
+* Other sections from home

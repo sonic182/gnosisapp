@@ -54,17 +54,23 @@ export function getPostsFail(res) {
 
 export function fetchPosts(opts) {
   let INITIAL_OFFSET = 0,
-    NUMBER = 20,
+    // NUMBER = 40,
     offset= 0;
 
   return (dispatch, getState) => {
+    let state = getState()
+    let NUMBER = state.newsApp.posts_pagination
     opts = opts || {}
+    opts.route = state.navigationApp.current
     dispatch(getPosts(opts))
     if (opts.offset){
-      offset = opts.offset == '+' ? offset + 20 : 0
+      offset = opts.offset == '+' ? offset + NUMBER : 0
     }
 
-    let category = opts.category ? opts.category : getState().newsApp.category
+    console.log('opts')
+    console.log(opts)
+
+    let category = opts.category ? opts.category : state.newsApp.category
     let params = {pretty: true, offset: offset, number: NUMBER};
 
     if ( category && category.ID !== 0)

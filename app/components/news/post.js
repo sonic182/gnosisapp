@@ -32,9 +32,7 @@ export default class PostItem extends Component {
 			// console.log('post')
 			// console.log(post)
 			Share.share({
-				message: `Hey, mira esta publicación, puedes encontrarla interesante
-					${post.URL}
-				`,
+				message: `Hey, mira esta publicación, puedes encontrarla interesante: ${post.URL}`,
 				title: utils.entities.decode(post.title),
 				url: post.URL,
 			})

@@ -57,9 +57,19 @@ function navigationApp(state = initialStateNavigation, action) {
 	}
 }
 
+var customPostsFilter = (route) => {
+	return (post) => {
+		if (route.title == 'News'){
+			return post.title.toLowerCase().match(/(conferencia|curso|taller)/) ? false : true;
+		}
+		return true
+	}
+}
+
 const initialStateNews = () => {
 	let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.ID !== r2.ID})
 	let all_categories = {name: 'Todo', ID: 0};
+
 
 	return {
 		categories: [all_categories],
@@ -71,6 +81,7 @@ const initialStateNews = () => {
 		category: all_categories,
 		refreshing: false,
 		last_response_count: 0,
+		posts_pagination: 40,
 		error: false,
 		ds: ds
 	}
@@ -106,9 +117,13 @@ function newsApp(state = initialStateNews(), action) {
 		case GET_POSTS_SUCCES:
 		let res_posts = action.data.res.posts;
 		let _posts = action.data.opts.scroll ? res_posts : [...state._posts, ...res_posts]
-		let postsDS = state.ds.cloneWithRows(_posts)
+		let postsDS = state.ds.cloneWithRows(_posts.filter(customPostsFilter(action.data.opts.route)))
+
 		if (action.data.opts.scroll)
-			state.lv.scrollTo({y: 0, animated: true})
+			setTimeout(() => {
+				state.lv.scrollTo({y: 0, animated: true})
+				state.lv.scrollTo({y: 0, animated: true})
+			}, 300)
 
 		return Object.assign({}, state, {
 			last_response_count: _posts.length,

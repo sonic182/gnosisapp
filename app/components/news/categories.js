@@ -35,10 +35,10 @@ class CategoriesList extends Component {
 	constructor (props) {
 		super(props)
 		this.ALL_CATEGORY = {name: 'Todo', ID: 0};
-		this.state = {
-			categories: [this.ALL_CATEGORY]
-		}
-		this.focusCategory.bind(this);
+		// this.state = {
+		// 	categories: [this.ALL_CATEGORY]
+		// }
+		// this.focusCategory.bind(this);
 		this.getCategories.bind(this);
 	}
 
@@ -75,16 +75,16 @@ class CategoriesList extends Component {
 		this.props.fetchPosts({category: c, scroll: true})
 	}
 
-	focusCategory (c) {
-		return () => {
-			this.state.categories.forEach((cat) => {
-				cat.selected = false;
-			})
-			c.selected = true;
-			this.setState({categories: this.state.categories})
-			this.props.selectedCategory(c)
-		}
-	}
+	// focusCategory (c) {
+	// 	return () => {
+	// 		this.state.categories.forEach((cat) => {
+	// 			cat.selected = false;
+	// 		})
+	// 		c.selected = true;
+	// 		this.setState({categories: this.state.categories})
+	// 		this.props.selectedCategory(c)
+	// 	}
+	// }
 }
 
 const styles = StyleSheet.create({

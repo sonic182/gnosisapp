@@ -83,6 +83,7 @@ class Main extends Component {
     return [
       { title: 'Menu', index: 0 },
       { title: 'News', index: 1 },
+      { title: 'Sedes', index: 1 },
       { title: 'PostView', index: 2, post: null },
     ]
   }
@@ -142,6 +143,10 @@ class Main extends Component {
 
     switch(route.title) {
       case 'News':
+        return (
+          <News style={styles.scene} title={route.title} />
+        )
+      case 'Sedes':
         return (
           <News style={styles.scene} title={route.title} />
         )

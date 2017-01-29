@@ -21,7 +21,7 @@ class MenuItem extends Component{
 			<TouchableHighlight onPress={() => {
 				this.props.route ? this.props.pushRoute() : alert('Esta sección no está disponible')
 			}}>
-			<View style={styles.content}>
+			<View style={this.props.route ? styles.content : styles.no_available}>
 
 				<Icon onPress={navigator.pop}
 				 style={styles.menuIcon}
@@ -42,6 +42,11 @@ class MenuItem extends Component{
 const styles = StyleSheet.create({
 	content: {
 		backgroundColor: 'white',
+		width: 140,
+		padding: 15,
+	},
+	no_available: {
+		backgroundColor: '#feb4b4',
 		width: 140,
 		padding: 15,
 	},

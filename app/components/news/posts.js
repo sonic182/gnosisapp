@@ -27,20 +27,6 @@ class Posts extends Component {
 		this.props.fetchPosts()
 	}
 
-	customPostsFilter (post) {
-		if (this.props.route.title == 'News'){
-			return post.title.toLowerCase().match(/conferencia/g) ? false : true;
-		}
-		return true
-	}
-
-
-	hasCategory(cat){
-		return (post) => {
-			let res = Object.keys(post.categories).filter((c) => c === cat.name)
-			return res.length
-		}
-	}
 
 	_onRefresh() {
 		// this.offset = this.INITIAL_OFFSET;
@@ -62,7 +48,7 @@ class Posts extends Component {
 				enableEmptySections={true}
 				onEndReached={() => {
 					// return alert('onEndReached')
-					if (this.props.last_response_count == 20 && ! this.props.refreshing){
+					if (this.props.last_response_count == this.props.posts_pagination && !this.props.refreshing ){
 					// 	this.offset = this.offset + this.NUMBER;
 					// 	// this.setState({offset: offset });
 						// alert('more posts')
@@ -97,6 +83,7 @@ const styles = StyleSheet.create({
 const stateToProps = (state) => {
 	return {
 		route: state.newsApp.current,
+		posts_pagination: state.newsApp.posts_pagination,
 		last_response_count: state.newsApp.last_response_count,
 		posts: state.newsApp.posts,
 		refreshing: state.newsApp.refreshing
